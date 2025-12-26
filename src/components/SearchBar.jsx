@@ -1,4 +1,4 @@
-export default function SearchBar({ query, setQuery, onSearch, placeholder = "Search..." }) {
+export default function SearchBar({ query, setQuery, onSearch, placeholder = "Search character by name..." }) {
   return (
     <form onSubmit={onSearch} className="search-bar-container">
       <div className="search-bar-wrapper">

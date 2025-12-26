@@ -3,17 +3,17 @@ import PlanetCard from '../components/PlanetCard';
 import Loader from '../components/Loader';
 import { searchPlanets } from '../services/swapi';
 import featuredPlanetNames from '../data/featuredPlanets';
+import '../styles/Planets.css';
 
 export default function Planets() {
   const [planets, setPlanets] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [transitioning, setTransitioning] = useState(false); // Untuk animasi
 
-  // Touch swipe refs
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // Fetch semua featured planets (tanpa search)
   const fetchAllPlanets = async () => {
     setLoading(true);
     let allPlanets = [];
@@ -33,7 +33,6 @@ export default function Planets() {
         page++;
       }
 
-      // Urutkan sesuai featuredPlanetNames
       const sortedPlanets = allPlanets.sort((a, b) => {
         const indexA = featuredPlanetNames.indexOf(a.name);
         const indexB = featuredPlanetNames.indexOf(b.name);
@@ -53,15 +52,39 @@ export default function Planets() {
     fetchAllPlanets();
   }, []);
 
+  useEffect(() => {
+    if (planets.length > 0) {
+      const next = planets[(currentIndex + 1) % planets.length];
+      const prev = planets[(currentIndex - 1 + planets.length) % planets.length];
+
+      const preload = (url) => {
+        if (url) {
+          const img = new Image();
+          img.src = url;
+        }
+      };
+
+      preload(`/images/planets/${next.name.toLowerCase().replace(/\s+/g, '-')}.jpg`);
+      preload(`/images/planets/${prev.name.toLowerCase().replace(/\s+/g, '-')}.jpg`);
+    }
+  }, [currentIndex, planets]);
+
   const goToPrev = () => {
-    setCurrentIndex(prev => (prev - 1 + planets.length) % planets.length);
+    setTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev - 1 + planets.length) % planets.length);
+      setTransitioning(false);
+    }, 400);
   };
 
   const goToNext = () => {
-    setCurrentIndex(prev => (prev + 1) % planets.length);
+    setTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev + 1) % planets.length);
+      setTransitioning(false);
+    }, 400);
   };
 
-  // Swipe handlers
   const handleTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].screenX;
   };
@@ -84,16 +107,13 @@ export default function Planets() {
   return (
     <div className="single-planet-page">
       <div className="container py-5">
-        <h1 className="text-center text-warning display-5 mb-4">PLANETS OF THE GALAXY</h1>
+        <h1 className="text-center text-warning display-5 mb-4">PLANETS</h1>
 
-        {/* MAIN SHOWCASE */}
         <div
           className="planet-showcase"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-
-          {/* Panah hanya di desktop */}
           {planets.length > 1 && (
             <>
               <button className="nav-arrow left desktop-only" onClick={goToPrev}>
@@ -105,8 +125,7 @@ export default function Planets() {
             </>
           )}
 
-          {/* Orbit Planets */}
-          <div className="planets-orbit-container">
+          <div className={`planets-orbit-container ${transitioning ? 'transitioning' : ''}`}>
             <div className="prev-planet">
               <PlanetCard
                 planet={planets[(currentIndex - 1 + planets.length) % planets.length]}
@@ -115,7 +134,9 @@ export default function Planets() {
             </div>
 
             <div className="center-planet-wrapper">
-              <PlanetCard planet={currentPlanet} size="hero" />
+              <div className={`planet-transition ${transitioning ? 'fade-out' : 'fade-in'}`}>
+                <PlanetCard planet={currentPlanet} size="hero" />
+              </div>
             </div>
 
             <div className="next-planet">
@@ -126,7 +147,6 @@ export default function Planets() {
             </div>
           </div>
 
-          {/* Infinite Dot Indicator (mobile only) */}
           <div className="dot-indicator mobile-only">
             {(() => {
               const total = planets.length;
@@ -148,7 +168,13 @@ export default function Planets() {
                       opacity: isActive ? 1 : isNearEdge ? 0.4 : 0.7,
                       transform: `scale(${isActive ? 1.6 : isNearEdge ? 0.6 : 0.9})`,
                     }}
-                    onClick={() => setCurrentIndex(index)}
+                    onClick={() => {
+                      setTransitioning(true);
+                      setTimeout(() => {
+                        setCurrentIndex(index);
+                        setTransitioning(false);
+                      }, 400);
+                    }}
                   />
                 );
               }
@@ -156,13 +182,11 @@ export default function Planets() {
             })()}
           </div>
 
-          {/* Planet Details */}
           <div className="planet-details">
             <h2 className="planet-title">{currentPlanet.name.toLowerCase()}</h2>
           </div>
         </div>
 
-        {/* Counter di bawah */}
         <div className="text-center text-light opacity-75">
           <strong>{currentIndex + 1}</strong> / <strong>{planets.length}</strong>
         </div>

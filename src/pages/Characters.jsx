@@ -3,77 +3,157 @@ import SearchBar from '../components/SearchBar';
 import CharacterCard from '../components/CharacterCard';
 import Loader from '../components/Loader';
 import { searchCharacters } from '../services/swapi';
+import '../styles/Characters.css';
+
+const ITEMS_PER_PAGE = 8;
 
 export default function Characters() {
-  const [characters, setCharacters] = useState([]);
-  const [query, setQuery] = useState('');
+  const [allCharacters, setAllCharacters] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
 
-  const fetchAllCharacters = async (searchQuery = '') => {
+  const fetchAllCharacters = async (query = '') => {
     setLoading(true);
     let all = [];
     let page = 1;
 
     try {
       while (true) {
-        const res = await searchCharacters(searchQuery, page);
+        const res = await searchCharacters(query, page);
         if (!res.data.results.length) break;
 
         all = [...all, ...res.data.results];
 
-        if (!res.data.next) {
-          setHasMore(false);
-          break;
-        }
+        if (!res.data.next) break;
         page++;
       }
-      setCharacters(all);
+      setAllCharacters(all);
     } catch (err) {
       console.error('Failed to fetch characters:', err);
+      setAllCharacters([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAllCharacters(query);
-  }, [query]);
+    setCurrentPage(1);
+    fetchAllCharacters(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchQuery(inputValue.trim());
+  };
+
+  const filteredCharacters = allCharacters;
+  const totalFiltered = filteredCharacters.length;
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalFiltered);
+  const currentCharacters = filteredCharacters.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(totalFiltered / ITEMS_PER_PAGE);
+
+  const goToPrevious = () => {
+    setCurrentPage(prev => prev === 1 ? totalPages || 1 : prev - 1);
+  };
+
+  const goToNext = () => {
+    setCurrentPage(prev => prev === totalPages ? 1 : prev + 1);
+  };
+
+  const displayedCount = currentCharacters.length;
+  let gridColsClass = 'row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4';
+  
+  if (displayedCount <= 2) {
+    gridColsClass = 'row-cols-2 row-cols-sm-2';
+  } else if (displayedCount <= 4) {
+    gridColsClass = 'row-cols-2 row-cols-sm-2 row-cols-md-3';
+  } else if (displayedCount <= 6) {
+    gridColsClass = 'row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4';
+  }
 
   return (
     <div className="container py-5">
-      <h1 className="text-center text-warning mb-4 display-5">CHARACTERS</h1>
-      
+      <h1 className="text-center text-warning mb-4 display-5">
+        CHARACTERS
+      </h1>
+
       <SearchBar
-        query={query}
-        setQuery={setQuery}
-        onSearch={(e) => e.preventDefault()}
-        placeholder="Search characters..."
+        query={inputValue}
+        setQuery={setInputValue}
+        onSearch={handleSearch}
+        placeholder="Search characters by name..."
+        className="mb-5"
       />
 
       {loading ? (
         <div className="text-center py-5">
           <Loader />
-          <p className="text-light mt-3">Loading all characters from a galaxy far, far away...</p>
+          <p className="text-light mt-4 fs-5">
+            Retrieving data from the Jedi Archives...
+          </p>
         </div>
-      ) : characters.length === 0 ? (
-        <p className="text-center text-light">No characters found.</p>
+      ) : totalFiltered === 0 ? (
+        <div className="text-center py-5">
+          <h3 className="text-light opacity-75">
+            {searchQuery ? `No characters found for "${searchQuery}"` : 'No characters available'}
+          </h3>
+        </div>
       ) : (
         <>
-          <div className="masonry-grid">
-            {characters.map((c) => (
-              <div key={c.url} className="masonry-item">
+          <div className={`row g-4 justify-content-center mb-5 ${gridColsClass}`}>
+            {currentCharacters.map((c) => (
+              <div key={c.url} className="col">
                 <CharacterCard character={c} />
               </div>
             ))}
           </div>
 
-          {!hasMore && (
-            <div className="text-center mt-5">
-              <p className="text-light opacity-75">
-                You've explored all characters in the galaxy!
-              </p>
-            </div>
+          <div className="text-center text-light mb-4">
+            {searchQuery ? (
+              <span>
+                Found <strong>{totalFiltered}</strong> character{totalFiltered > 1 ? 's' : ''} for "<strong>{searchQuery}</strong>"
+                {totalFiltered > ITEMS_PER_PAGE && (
+                  <> • Showing <strong>{startIndex + 1}</strong> - <strong>{endIndex}</strong></>
+                )}
+              </span>
+            ) : (
+              <span>
+                Showing <strong>{startIndex + 1}</strong> - <strong>{endIndex}</strong> of <strong>{totalFiltered}</strong> characters
+              </span>
+            )}
+          </div>
+
+          {totalPages > 1 && (
+            <nav aria-label="Character pagination" className="d-flex justify-content-center">
+              <ul className="pagination pagination-lg">
+                <li className="page-item">
+                  <button
+                    className="page-link bg-transparent text-warning border-warning pagination-btn"
+                    onClick={goToPrevious}
+                  >
+                    <span aria-hidden="true">Previous</span>
+                  </button>
+                </li>
+                <li className="page-item disabled">
+                  <span className="page-link bg-warning border-warning text-dark fw-bold">
+                    {currentPage} / {totalPages}
+                  </span>
+                </li>
+                <li className="page-item">
+                  <button
+                    className="page-link bg-transparent text-warning border-warning pagination-btn"
+                    onClick={goToNext}
+                  >
+                    <span aria-hidden="true">Next</span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
           )}
         </>
       )}

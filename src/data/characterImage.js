@@ -80,7 +80,12 @@ const characterImage = {
   "Tarfful": "tarfful",
   "Raymus Antilles": "raymus-antilles",
   "Sly Moore": "sly-moore",
-  "Tion Medon": "tion-medon"
+  "Tion Medon": "tion-medon",
+  "Finn": "finn",
+  "Rey": "rey",
+  "Poe Dameron": "poe-dameron",
+  "BB8": "bb8",
+  "Captain Phasma": "captain-phasma"
 };
 
 export default characterImage;

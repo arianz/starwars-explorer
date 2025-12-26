@@ -1,4 +1,3 @@
-// pages/CharacterDetail.jsx (hanya ganti bagian imageUrl)
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getCharacter, getHomeworld, getFilms } from '../services/swapi';
@@ -44,43 +43,73 @@ export default function CharacterDetail() {
 
   return (
     <div className="container py-5">
-      <Link to="/characters" className="btn btn-warning mb-4 fw-bold">← Back to Galaxy</Link>
-      
-      <div className="row g-5 align-items-center">
-        <div className="col-md-5 text-center">
-          <img 
-            src={`/images/characters/${imageFile}.jpg`}
-            alt={char.name}
-            className="img-fluid rounded-4 shadow-lg"
-            style={{ maxHeight: '550px', objectFit: 'cover' }}
-            onError={(e) => e.target.src = '/images/characters/unknown.jpg'}
-          />
-          <h1 className="mt-4 text-warning display-5 fw-bold">{char.name}</h1>
-        </div>
+      <Link 
+        to="/characters" 
+        className="btn btn-outline-warning btn-lg mb-4 fw-medium d-inline-flex align-items-center"
+      >
+        Back to Galaxy
+      </Link>
 
-        <div className="col-md-7">
-          <div className="card bg-dark text-light border-warning">
-            <div className="card-body">
-              <h3 className="text-warning mb-4">Character Profile</h3>
-              <table className="table table-dark table-striped">
+      <div className="card bg-transparent text-light shadow-lg">
+        <div className="row g-0">
+          {/* Gambar di kiri (full lebar di HP) */}
+          <div className="col-md-5 border border-warning border-2 rounded-3">
+            <img
+              src={`/images/characters/${imageFile}.jpg`}
+              alt={char.name}
+              className="img-fluid rounded h-100"
+              style={{ objectFit: 'cover', minHeight: '500px' }}
+              onError={(e) => (e.target.src = '/images/characters/unknown.jpg')}
+            />
+          </div>
+
+          {/* Detail di kanan */}
+          <div className="col-md-7">
+            <div className="card-body p-4">
+              <h1 className="card-title text-warning text-center display-4 fw-bold mb-4">
+                {char.name}
+              </h1>
+
+              <table className="table table-dark table-striped mb-4">
                 <tbody>
-                  <tr><td width="40%">Homeworld</td><td><strong>{homeworld}</strong></td></tr>
-                  <tr><td>Birth Year</td><td><strong>{char.birth_year}</strong></td></tr>
-                  <tr><td>Height</td><td><strong>{char.height} cm</strong></td></tr>
-                  <tr><td>Mass</td><td><strong>{char.mass} kg</strong></td></tr>
-                  <tr><td>Eye Color</td><td><strong>{char.eye_color}</strong></td></tr>
-                  <tr><td>Species</td><td><strong>{species}</strong></td></tr>
+                  <tr>
+                    <td className="w-50 fw-medium text-warning">Homeworld</td>
+                    <td>{homeworld}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium text-warning">Birth Year</td>
+                    <td>{char.birth_year}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium text-warning">Height</td>
+                    <td>{char.height} cm</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium text-warning">Mass</td>
+                    <td>{char.mass} kg</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium text-warning">Eye Color</td>
+                    <td className="text-capitalize">{char.eye_color}</td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium text-warning">Species</td>
+                    <td>{species}</td>
+                  </tr>
                 </tbody>
               </table>
 
               {films.length > 0 && (
                 <>
-                  <h4 className="text-warning mt-4">Appears in</h4>
-                  <div className="row">
+                  <h4 className="text-warning mb-3">Appears in Films</h4>
+                  <div className="d-flex flex-wrap gap-2">
                     {films.map((film, i) => (
-                      <div key={i} className="col-6 mb-2">
-                        <span className="badge bg-warning text-dark fs-6">{film}</span>
-                      </div>
+                      <span 
+                        key={i} 
+                        className="badge bg-warning text-dark fs-6 px-3 py-2"
+                      >
+                        {film}
+                      </span>
                     ))}
                   </div>
                 </>

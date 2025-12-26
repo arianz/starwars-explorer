@@ -8,7 +8,13 @@ const speciesImage = {
   "Trandoshan": "trandoshan",
   "Mon Calamari": "moncalamari",
   "Ewok": "ewok",
-  "Sullustan": "sullustan"
+  "Sullustan": "sullustan",
+  "Neimodian": "neimodian",
+  "Gungan": "gungan",
+  "Toydarian": "toydarian",
+  "Dug": "dug",
+  "Cerean": "cerean",
+  "Kaminoan": "kaminoan"
 };
 
 export default speciesImage;

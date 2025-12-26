@@ -1,0 +1,14 @@
+.species-circle {
+  width: 140px;
+  height: 140px;
+  transition: transform 0.3s;
+}
+.species-circle:hover {
+  transform: scale(1.1);
+}
+.species-title {
+  text-transform: capitalize;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

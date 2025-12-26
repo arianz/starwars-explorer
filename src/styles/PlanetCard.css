@@ -1,0 +1,63 @@
+.planet-card {
+  border-radius: 50% !important;
+}
+
+.planet-card.hero {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+}
+
+.planet-card.hero:hover {
+  transform: scale(1.06);
+}
+
+.planet-card.hero .planet-image {
+  width: 100%;
+  height: 100%;
+}
+
+.planet-card.hero .planet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.planet-card.tiny {
+  width: 200px;
+  height: 200px;
+}
+
+.planet-card.tiny .planet-image {
+  width: 100%;
+  height: 100%;
+}
+
+.planet-card.tiny img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.planet-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.planet-link:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .planet-card.tiny {
+    width: 80px;
+    height: 80px;
+  }
+}

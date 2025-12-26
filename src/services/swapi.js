@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const SWAPI = 'https://swapi.dev/api';
+const SWAPI = 'https://swapi.py4e.com/api';
 
 export const searchCharacters = (query = '', page = 1) =>
   axios.get(`${SWAPI}/people/?search=${query}&page=${page}`);

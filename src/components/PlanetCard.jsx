@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import planetImageMap from '../data/planetImage';
+import '../styles/PlanetCard.css';
 
 const DEFAULT_IMAGE = '/images/planets/placeholder.png';
 
