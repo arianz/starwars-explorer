@@ -1,42 +1,42 @@
-# Starwars Explorer
+# Star Wars Explorer
 
-**Starwars Explorer** adalah aplikasi web yang memungkinkan pengguna untuk menjelajahi dunia Star Wars, termasuk karakter, planet, dan spesies yang diambil dari [SWAPI (Star Wars API)](https://swapi.dev/).
+A simple React web application for exploring Star Wars data using the SWAPI (Star Wars API). Users can view characters, planets, and species from the Star Wars universe.
 
-## Fitur
+## Features
+- Home page with hero section and featured saga carousel.
+- Characters page with search and paginated grid of characters.
+- Planets page with a large planet carousel.
+- Species page with circular species cards and pagination.
+- Responsive layout and basic loading/error handling for API requests.
 
-- **Pencarian Data Star Wars**: Telusuri berbagai macam karakter, planet, dan spesies dari dunia Star Wars.
-- **Detail Setiap Entitas**: Setiap item menyediakan informasi tambahan.
-- **Navigasi yang Mudah**: Antar muka yang intuitif memudahkan pengguna dalam menjelajahi data.
-- **Responsif**: Tampilan aplikasi yang nyaman baik di desktop maupun perangkat mobile.
+## Technologies Used
+- JavaScript
+- React
+- Bootstrap
+- CSS
+- SWAPI
 
-## Tech Stack
+## Installation
 
-- **Frontend:**  
-  - ReactJS
-  - CSS   
-  - Axios
-- **Backend:**  
-  - Menggunakan data dari [SWAPI](https://swapi.dev/)  
-
-## Cara Menjalankan Proyek
-
-1. **Clone repository**
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/arianz/starwars-explorer.git
+   ```
+2. Navigate to the project directory:
+   ```bash
    cd starwars-explorer
    ```
-2. **Install dependencies**
+3. Ensure you have Node.js installed, then install dependencies:
    ```bash
    npm install
    ```
-3. **Jalankan aplikasi**
+4. Start the development server:
    ```bash
    npm start
    ```
-4. **Buka browser**  
-   Kunjungi [http://localhost:3000](http://localhost:3000)
+5. Open http://localhost:3000 in your browser.
 
-
----
-
-**Selamat menjelajah galaksi bersama Starwars Explorer!**
+## Screenshots
+|          App Interface - Desktop         |          App Interface - Mobile          |
+|------------------------------------------|------------------------------------------|
+| ![Desktop Display](screenshots/app_interface_desktop.png) | ![Mobile Display](screenshots/app_interface_mobile.jpeg) |

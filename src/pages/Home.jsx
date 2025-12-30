@@ -18,7 +18,7 @@ export default function Home() {
             style={{ maxWidth: '400px' }}
           />
           <p className="lead text-light mb-5 px-3">
-            Explore various characters, planets, films, and species from a galaxy far, far away...
+            Explore various characters, planets, and species from a galaxy far, far away...
           </p>
         </div>
       </div>
