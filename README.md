@@ -39,4 +39,4 @@ A simple React web application for exploring Star Wars data using the SWAPI (Sta
 ## Screenshots
 |          App Interface - Desktop         |          App Interface - Mobile          |
 |------------------------------------------|------------------------------------------|
-| ![Desktop Display](screenshots/app_interface_desktop.png) | ![Mobile Display](screenshots/app_interface_mobile.jpeg) |
+| ![Desktop Display](screenshots/app_interface_desktop.png) | ![Mobile Display](screenshots/app_interface_mobile.png) |
